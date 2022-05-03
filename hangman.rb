@@ -9,17 +9,17 @@ class GAME
         end
     end
 
-    secret = goodWords[rand(goodWords.length)].downcase
+    secret = goodWords[rand(goodWords.length)].chomp.downcase
     result = ""
     wrongletters = ""
-    for i in 0..secret.length-2     #makes a string equal in length to secret
+    for i in 0..secret.length-1     #makes a string equal in length to secret
         result = result + "-"
     end
-    result = result + "\n"
+    result = result
 
     puts "Would you like to load a previous game? (y/n)"
-    choice = gets.downcase
-    if choice == "y\n"
+    choice = gets.chomp.downcase
+    if choice == "y"
         puts "Name of save file?"
         id = gets
         File.open("savegames/#{id}.txt", 'r') do |file|
@@ -33,9 +33,9 @@ class GAME
         puts result
         puts "Wrong letters (up to 10): " + wrongletters
 
-        puts "Would you like to save the game? (y/n)"
-        choice = gets.downcase
-        if choice == "y\n"
+        puts "Guess a letter, or # to save: "
+        choice = gets.chomp
+        if choice == "#"
             Dir.mkdir('savegames') unless Dir.exist?('savegames')
             puts "Name for save file?"
             id = gets
@@ -46,9 +46,7 @@ class GAME
             end
             exit
         end
-
-        puts "Guess a letter: "
-        guess = gets
+        guess = choice.downcase
         correctguess = false
         puts
 
