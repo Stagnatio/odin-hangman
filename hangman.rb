@@ -1,4 +1,4 @@
-#require 'google-10000-english-no-swears.txt'
+
 class GAME
     words = File.readlines('google-10000-english-no-swears.txt')
     goodWords = Array.new
@@ -17,9 +17,36 @@ class GAME
     end
     result = result + "\n"
 
+    puts "Would you like to load a previous game? (y/n)"
+    choice = gets.downcase
+    if choice == "y\n"
+        puts "Name of save file?"
+        id = gets
+        File.open("savegames/#{id}.txt", 'r') do |file|
+            secret = file.readline
+            result = file.readline
+            wrongletters = file.readline
+        end
+    end
+
     while (secret != result)
         puts result
         puts "Wrong letters (up to 10): " + wrongletters
+
+        puts "Would you like to save the game? (y/n)"
+        choice = gets.downcase
+        if choice == "y\n"
+            Dir.mkdir('savegames') unless Dir.exist?('savegames')
+            puts "Name for save file?"
+            id = gets
+            File.open("savegames/#{id}.txt", 'w') do |file|
+                file.puts secret
+                file.puts result
+                file.puts wrongletters
+            end
+            exit
+        end
+
         puts "Guess a letter: "
         guess = gets
         correctguess = false
